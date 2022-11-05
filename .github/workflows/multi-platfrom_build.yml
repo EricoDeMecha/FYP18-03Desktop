@@ -37,20 +37,16 @@ jobs:
           script-name: main.py
           onefile: true
 
-      - name: version
-        run: echo "::set-output name=version::$(./bin/azblogfilter --version)"
-        id: version
-      - name: release
-        uses: actions/create-release@v1
-        id: create_release
+      - name: Create releases
+        uses: "marvinpinto/action-automatic-releases@latest"
         with:
-          draft: false
+          repo_token: "${{ secrets.GITHUB_TOKEN }}"
+#          automatic_release_tag: "latest"
           prerelease: false
-          release_name: ${{ steps.version.outputs.version }}
-          tag_name: ${{ github.ref }}
-          body_path: CHANGELOG.md
-        env:
-          GITHUB_TOKEN: ${{ github.token  }}
+          title: "Releases"
+          files: |
+            build/*.exe
+            build/*.bin
       # Uploads artifacts
       - name: "Upload Artifacts"
         uses: actions/upload-artifact@v3
