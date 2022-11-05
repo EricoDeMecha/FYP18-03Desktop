@@ -45,8 +45,7 @@ jobs:
           prerelease: false
           title: "Releases"
           files: |
-            build/*.exe
-            build/*.bin
+            build/*
       # Uploads artifacts
       - name: "Upload Artifacts"
         uses: actions/upload-artifact@v3
