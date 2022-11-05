@@ -34,7 +34,7 @@ jobs:
       # Build python script into a stand-alone exe
       - uses: jimkring/python-script-to-exe@v0.2.0
         with:
-          script-name: kasa_cli
+          script-name: main
           onefile: true
 
       # Uploads artifacts
