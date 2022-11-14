@@ -15,6 +15,8 @@ ApplicationWindow {
     id: root
     width: 800
     height: 600
+    maximumWidth: 800
+    maximumHeight: 600
     visible: true
     title: "FYP18-03 Auto-Application"
 
@@ -249,36 +251,83 @@ ApplicationWindow {
         }
 
         Button {
-            id:stopBtn
-            text: qsTr("Stop")
+            id: resetBtn
+            text: qsTr("Reset")
             anchors {
                 left: startBtn.right
                 leftMargin: 40
                 verticalCenter: startBtn.verticalCenter
             }
             onClicked: {
-                backend.stopButtonPressed(stopBtn.clicked)
+                backend.stopButtonPressed(resetBtn.clicked)
+                stepsSlider.value = 0
+                timeSlider.value = 0
             }
             background: Rectangle {
                 implicitWidth: mainPage.m_width * 0.1
                 implicitHeight: mainPage.m_height  * 0.06
-                border.width: stopBtn.activeFocus ? 2 : 1
+                border.width: resetBtn.activeFocus ? 2 : 1
                 border.color: "#888"
                 radius: 8
                 gradient: Gradient {
-                    GradientStop { position: 0 ; color: stopBtn.pressed ? "#ccc" : "#eee" }
-                    GradientStop { position: 1 ; color: stopBtn.pressed ? "#aaa" : "#ccc" }
+                    GradientStop { position: 0 ; color: resetBtn.pressed ? "#ccc" : "#eee" }
+                    GradientStop { position: 1 ; color: resetBtn.pressed ? "#aaa" : "#ccc" }
                 }
             }
         }
-
+        Label {
+            id: temperatureTitleLabel
+            anchors {
+                left: diverter.right
+                top: startBtn.bottom
+                topMargin: 20
+                leftMargin: 40
+            }
+            text: "Temperature:"
+            color: "#FFFFFF"
+            font.pixelSize: 16
+            Label {
+                id: temperatureLabel
+                anchors {
+                    left: parent.right
+                    leftMargin: 20
+                    verticalCenter: parent.verticalCenter
+                }
+                text: "0 °C"
+                color: parent.color
+                font.pixelSize: parent.font.pixelSize
+            }
+        }
+         Label {
+            id: weightTitleLabel
+            anchors {
+                left: diverter.right
+                top: temperatureTitleLabel.baseline
+                topMargin: 10
+                leftMargin: 40
+            }
+            text: "Weight:"
+            color: "#FFFFFF"
+            font.pixelSize: 16
+            Label {
+                id: weightLabel
+                anchors {
+                    left: parent.right
+                    leftMargin: 20
+                    verticalCenter: parent.verticalCenter
+                }
+                text: "0 Kg"
+                color: parent.color
+                font.pixelSize: parent.font.pixelSize
+            }
+        }
         Button {
             id:nextBtn
             text: qsTr("Next Step")
             anchors{
-                top: stopBtn.bottom
+                top: resetBtn.bottom
                 topMargin: 20
-                horizontalCenter: stopBtn.horizontalCenter
+                horizontalCenter: resetBtn.horizontalCenter
             }
             onClicked: {
                 backend.nextStepButtonPressed(nextBtn.clicked)
@@ -294,6 +343,7 @@ ApplicationWindow {
                     GradientStop { position: 1 ; color: nextBtn.pressed ? "#aaa" : "#ccc" }
                 }
             }
+            
         }
 
 

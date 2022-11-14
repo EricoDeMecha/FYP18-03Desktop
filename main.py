@@ -2,7 +2,7 @@ import os
 import sys
 
 from PySide2.QtCore import QObject, Slot, QUrl
-from PySide2.QtGui import QGuiApplication
+from PySide2.QtGui import QGuiApplication, QIcon
 from PySide2.QtQml import QQmlApplicationEngine
 
 CURRENT_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -56,6 +56,7 @@ def main():
     app = QGuiApplication(sys.argv)
     engine = QQmlApplicationEngine()
 
+    app.setWindowIcon(QIcon('icons/mainIcon.png'))
     # Bind the backend object in qml
     backend = Backend()
     engine.rootContext().setContextProperty('backend', backend)
