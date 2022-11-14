@@ -1,25 +1,73 @@
-import sys
 import os
+import sys
 
-from PySide2.QtCore import QUrl
+from PySide2.QtCore import QObject, Slot, QUrl
 from PySide2.QtGui import QGuiApplication
 from PySide2.QtQml import QQmlApplicationEngine
-from PySide2.QtQuick import QQuickView
-from PySide2.QtQuickControls2 import QQuickStyle
 
-if __name__ == "__main__":
+CURRENT_DIR = os.path.dirname(os.path.abspath(__file__))
+
+class Backend(QObject):
+    def __init__(self, parent=None):
+        super(Backend, self).__init__(parent)
+
+    @Slot(int)
+    def valveValueChanged(self, value):
+        print(f"{value}")
+
+    @Slot(int)
+    def stepsSliderValueChanged(self, value):
+        print(f"{value}")
+
+    @Slot(int)
+    def timeSliderValueChanged(self, value):
+        print(f"{value}")
+
+    @Slot(bool)
+    def diverterStateChanged(self, value):
+        if(value):
+            print("true")
+        else:
+            print("False")
+
+    @Slot(bool)
+    def startButtonPressed(self, value):
+        if (value):
+            print("true")
+        else:
+            print("False")
+
+    @Slot(bool)
+    def stopButtonPressed(self, value):
+        if (value):
+            print("true")
+        else:
+            print("False")
+
+    @Slot(bool)
+    def nextStepButtonPressed(self, value):
+        if (value):
+            print("true")
+        else:
+            print("False")
+
+
+def main():
     app = QGuiApplication(sys.argv)
-    view = QQuickView()
-    view.setResizeMode(QQuickView.SizeViewToRootObject)
-    QQuickStyle.setStyle("Material")
     engine = QQmlApplicationEngine()
 
-    qml_file = os.path.join(os.path.dirname(__file__), 'main.qml')
+    # Bind the backend object in qml
+    backend = Backend()
+    engine.rootContext().setContextProperty('backend', backend)
 
-    view.setSource(QUrl.fromLocalFile(os.path.abspath(qml_file)))
-    if view.status() == QQuickView.Error:
-        sys.exit(-1)
+    # Load the target .qml file
+    engine.load(QUrl.fromLocalFile(os.path.join(CURRENT_DIR, 'main.qml')))
 
-    view.show()
-    app.exec_()
-    del view
+    if not engine.rootObjects():
+        return -1
+
+    return app.exec_()
+
+
+if __name__ == '__main__':
+    sys.exit(main())

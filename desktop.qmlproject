@@ -1,0 +1,36 @@
+import QmlProject 1.1
+
+Project {
+    mainFile: "main.qml"
+
+    /* Include .qml, .js, and image files from current directory and subdirectories */
+    QmlFiles {
+        directory: ".", "controls"
+    }
+
+    Environment {
+        QT_QUICK_CONTROLS_CONF: "qtquickcontrols2.conf"
+        QT_AUTO_SCREEN_SCALE_FACTOR: "1"
+        QMLSCENE_CORE_PROFILE: "true" // Required for macOS, but can create issues on embedded Linux
+        QT_LOGGING_RULES: "qt.qml.connections=false"
+        QT_ENABLE_HIGHDPI_SCALING: "0"
+        //Useful for debugging
+       QSG_VISUALIZE=batches
+       QSG_VISUALIZE=clip
+       QSG_VISUALIZE=changes
+       QSG_VISUALIZE=overdraw
+
+    }
+
+
+    /* Required for deployment */
+    targetDirectory: "/opt/desktop"
+
+    qdsVersion: "3.0"
+
+
+    multilanguageSupport: true
+    supportedLanguages: ["en"]
+    primaryLanguage: "en"
+
+}
