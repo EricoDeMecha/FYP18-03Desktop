@@ -331,6 +331,7 @@ ApplicationWindow {
             }
             onClicked: {
                 backend.nextStepButtonPressed(nextBtn.clicked)
+                tableView.model.appendRow()
             }
             background: Rectangle {
                 implicitWidth: mainPage.m_width * 0.1
@@ -352,82 +353,79 @@ ApplicationWindow {
             anchors {
                 horizontalCenter: mainPage.horizontalCenter
                 bottom: mainPage.bottom
-                bottomMargin: 40
+                bottomMargin: 20
             }
             width: mainPage.m_width - 100
-            height: mainPage.m_height - (diverter.y + diverter.height + 50)
+            height: mainPage.m_height - (diverter.y + diverter.height + 20)
+            property real column_count: 3
 
             TableView {
-                id: table
-                anchors.fill: parent
-                columnSpacing: 4; rowSpacing: 4
+                    id: tableView
+                    columnWidthProvider: function (column) { return (parent.width/tableQ.column_count); }
+                    rowHeightProvider: function (column) { return 20; }
+                    anchors.fill: parent
+                    leftMargin: rowsHeader.implicitWidth
+                    topMargin: columnsHeader.implicitHeight
+                    model: backend.model
+                    width: parent.width
+                    delegate: Rectangle {
+                        implicitWidth: (parent.width/tableQ.column_count)
+                        implicitHeight: 20
+                        Text {
+                            text: display
+                        }
+                    }
 
-                columnWidthProvider: function(column) { return headerRepeater.itemAt(column).width }
+                    Rectangle { // mask the headers
+                        z: 3
+                        color: "#222222"
+                        y: tableView.contentY
+                        x: tableView.contentX
+                        width: tableView.leftMargin
+                        height: tableView.topMargin
+                    }
 
-                delegate: DelegateChooser {
-                    role: "type"
-                    DelegateChoice {
-                        roleValue: "readonly"
-                        Rectangle {
-                            color: "grey"
-                            implicitHeight: readonlyText.implicitHeight
-                            Text {
-                                id: readonlyText
-                                text: model.display
-                                width: parent.width
-                                elide: Text.ElideRight
-                                font.preferShaping: false
-                            }
-                        }
-                    }
-                    DelegateChoice {
-                        roleValue: "id"
-                        Rectangle {
-                            color: "yellow"
-                            implicitHeight: idText.implicitHeight
-                            Text {
-                                id: idText
-                                text: model.display
-                                width: parent.width
-                                elide: Text.ElideRight
-                                font.preferShaping: false
-                            }
-                        }
-                    }
-                    DelegateChoice {
-                        roleValue: "string"
-                        Rectangle {
-                            color: "#0048BA"
-                            implicitHeight: stringText.implicitHeight *1.5
+                    Row {
+                        id: columnsHeader
+                        y: tableView.contentY
+                        z: 2
+                        Repeater {
+                            model: tableView.columns > 0 ? tableView.columns : 1
+                            Label {
+                                width: tableView.columnWidthProvider(modelData)
+                                height: 35
+                                text: backend.model.headerData(modelData, Qt.Horizontal)
+                                color: '#aaaaaa'
+                                font.pixelSize: 15
+                                padding: 10
+                                verticalAlignment: Text.AlignVCenter
 
-                            Text {
-                                id: stringText
-                                color: "white"
-                                text: model.display
-                                width: parent.width
-                                elide: Text.ElideRight
-                                font.preferShaping: false
+                                background: Rectangle { color: "#333333" }
                             }
                         }
                     }
-                    DelegateChoice {
-                        Rectangle {
-                            color: "#EEE"
-                            implicitHeight: defaultText.implicitHeight
-                            Text {
-                                id: defaultText
-                                text: model.display
-                                width: parent.width
-                                elide: Text.ElideRight
-                                horizontalAlignment: Text.AlignRight
-                                font.preferShaping: false
+                    Column {
+                        id: rowsHeader
+                        x: tableView.contentX
+                        z: 2
+                        Repeater {
+                            model: tableView.rows > 0 ? tableView.rows : 1
+                            Label {
+                                width: 40
+                                height: tableView.rowHeightProvider(modelData)
+                                text: backend.model.headerData(modelData, Qt.Vertical)
+                                color: '#aaaaaa'
+                                font.pixelSize: 12
+                                padding: 10
+                                verticalAlignment: Text.AlignVCenter
+                                background: Rectangle { color: "#333333" }
                             }
                         }
                     }
+
+                    ScrollIndicator.horizontal: ScrollIndicator { }
+                    ScrollIndicator.vertical: ScrollIndicator { }
                 }
-                ScrollBar.horizontal: ScrollBar { }
-                ScrollBar.vertical: ScrollBar { }
-            }
         }
     }
 }
