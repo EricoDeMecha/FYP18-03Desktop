@@ -97,6 +97,10 @@ class DataTableModel(QAbstractTableModel):
         self._table_data.append([randrange(0,100) for _ in range(len(self._header))])
         self.endInsertRows()
 
+    @Slot()
+    def resetTableData(self):
+        self._table_data.clear()
+
 def main():
     app = QGuiApplication(sys.argv)
     engine = QQmlApplicationEngine()

@@ -20,6 +20,15 @@ ApplicationWindow {
     visible: true
     title: "FYP18-03 Auto-Application"
 
+    Timer {
+            interval: 500; running: true; repeat: true
+            onTriggered: {
+                // call an update function from the backend
+                nextBtn.clicked()
+            }
+            triggeredOnStart:  true
+     }
+
     Rectangle {
         id: mainPage
 
@@ -262,6 +271,7 @@ ApplicationWindow {
                 backend.stopButtonPressed(resetBtn.clicked)
                 stepsSlider.value = 0
                 timeSlider.value = 0
+                backend.model.resetTableData()
             }
             background: Rectangle {
                 implicitWidth: mainPage.m_width * 0.1
