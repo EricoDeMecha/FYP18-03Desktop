@@ -21,10 +21,10 @@ ApplicationWindow {
     title: "FYP18-03 Auto-Application"
 
     Timer {
-            interval: 500; running: true; repeat: true
+            interval: 200; running: true; repeat: true
             onTriggered: {
-                // call an update function from the backend
-                nextBtn.clicked()
+                // retrieve values from the backend and distribute on the ui
+
             }
             triggeredOnStart:  true
      }
@@ -32,9 +32,12 @@ ApplicationWindow {
     Rectangle {
         id: mainPage
 
-        property real newVal: 0
-        property real steps: 0
-        property real time: 0
+        property int newVal: 0
+        property int steps: 0
+        property int time: 0
+        property real weight: 0
+        property real temperature: 0
+
         property real m_width: 800
         property real m_height: 600
         property var horizontal_header_data: ["Step No.", "Weight", "Temperature", "Time"] // table header
@@ -303,7 +306,7 @@ ApplicationWindow {
                     leftMargin: 20
                     verticalCenter: parent.verticalCenter
                 }
-                text: "0 °C"
+                text: mainPage.temperature
                 color: parent.color
                 font.pixelSize: parent.font.pixelSize
             }
@@ -326,7 +329,7 @@ ApplicationWindow {
                     leftMargin: 20
                     verticalCenter: parent.verticalCenter
                 }
-                text: "0 Kg"
+                text: mainPage.weight
                 color: parent.color
                 font.pixelSize: parent.font.pixelSize
             }

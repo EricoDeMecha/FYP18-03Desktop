@@ -1,0 +1,19 @@
+
+syntax = "proto3";
+
+message Command {
+	int32 valve = 1;
+	bool diverter  = 2;
+	uint32 n_steps = 3;
+	uint32 t_steps = 4;
+	bool start_btn = 5;
+	bool reset_btn = 6;
+	bool next_btn = 7;
+}
+
+message  Reply {
+	float temperature = 1;
+	float weight = 2;
+	float time_interval = 3;
+	uint32 current_step = 4;
+}
