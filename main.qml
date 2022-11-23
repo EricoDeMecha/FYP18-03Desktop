@@ -20,14 +20,14 @@ ApplicationWindow {
     visible: true
     title: "FYP18-03 Auto-Application"
 
-    Timer {
-            interval: 200; running: true; repeat: true
-            onTriggered: {
-                // retrieve values from the backend and distribute on the ui
+//    Timer {
+//            interval: 200; running: true; repeat: true
+//            onTriggered: {
+//                // retrieve values from the backend and distribute on the ui
 
-            }
-            triggeredOnStart:  true
-     }
+//            }
+//            triggeredOnStart:  true
+//     }
 
     Rectangle {
         id: mainPage
@@ -248,6 +248,9 @@ ApplicationWindow {
             onClicked: {
                 backend.startButtonPressed(startBtn.clicked)
             }
+            onReleased: {
+                backend.startButtonPressed(startBtn.clicked)
+            }
 
             background: Rectangle {
                 implicitWidth: mainPage.m_width * 0.1
@@ -271,11 +274,15 @@ ApplicationWindow {
                 verticalCenter: startBtn.verticalCenter
             }
             onClicked: {
-                backend.stopButtonPressed(resetBtn.clicked)
+                backend.resetButtonPressed(resetBtn.clicked)
                 stepsSlider.value = 0
                 timeSlider.value = 0
                 backend.model.resetTableData()
             }
+            onReleased: {
+                backend.resetButtonPressed(resetBtn.clicked)
+            }
+
             background: Rectangle {
                 implicitWidth: mainPage.m_width * 0.1
                 implicitHeight: mainPage.m_height  * 0.06
@@ -346,6 +353,10 @@ ApplicationWindow {
                 backend.nextStepButtonPressed(nextBtn.clicked)
                 tableView.model.appendRow()
             }
+            onReleased: {
+                backend.nextStepButtonPressed(nextBtn.clicked)
+            }
+
             background: Rectangle {
                 implicitWidth: mainPage.m_width * 0.1
                 implicitHeight: mainPage.m_height  * 0.06

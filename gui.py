@@ -8,20 +8,6 @@ from PySide2.QtCore import QObject, Slot, QUrl, QAbstractTableModel, QModelIndex
 from PySide2.QtGui import QGuiApplication, QIcon
 from PySide2.QtQml import QQmlApplicationEngine
 
-import socket
-
-from selectors import EVENT_READ, EVENT_WRITE
-import proto_msg_pb2
-from loop import Loop
-
-s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-s.bind(("", 1883))
-s.listen(1)
-s.setblocking(False)
-
-loop = Loop()
-
 CURRENT_DIR = os.path.dirname(os.path.abspath(__file__))
 
 
@@ -35,19 +21,19 @@ class Backend(QObject):
     @Slot(int)
     def valveValueChanged(self, value):
         # print(f"{value}")
-        self.data['valve'].put(value)
+        self.data['valve'] = value
 
     @Slot(int)
     def stepsSliderValueChanged(self, value):
         # print(f"{value}")
-        self.data['steps'].put(value)
+        self.data['n_steps'] = value
     @Slot(int)
     def timeSliderValueChanged(self, value):
         # print(f"{value}")
-        self.data['time'].put(value)
+        self.data['t_steps'] = value
     @Slot(bool)
     def diverterStateChanged(self, value):
-        self.data['diverter'].put(value)
+        self.data['diverter'] = value
         # if(value):
         #     print("true")
         # else:
@@ -55,15 +41,15 @@ class Backend(QObject):
 
     @Slot(bool)
     def startButtonPressed(self, value):
-        self.data['start'].put(value)
+        self.data['start_btn'] = value
         # if (value):
         #     print("true")
         # else:
         #     print("False")
 
     @Slot(bool)
-    def stopButtonPressed(self, value):
-        self.data['stop'].put(value)
+    def resetButtonPressed(self, value):
+        self.data['reset_btn'] = value
         # if (value):
         #     print("true")
         # else:
@@ -71,19 +57,22 @@ class Backend(QObject):
 
     @Slot(bool)
     def nextStepButtonPressed(self, value):
-        self.data['next'].put(value)
+        self.data['next_btn'] = value
+        self._model._table_data.append([self.get_weight(), self.get_temperature(), self.get_time()])
         # if (value):
         #     print("true")
         # else:
         #     print("False")
 
-    @Slot()
-    def get_temperature(self):
-        return self.data['temperature'].get()
 
-    @Slot()
+    def get_temperature(self):
+        return self.data['temperature']
+
     def get_weight(self):
-        return self.data['weight'].get()
+        return self.data['weight']
+
+    def get_time(self):
+        return self.data['time_interval']
 
 
     @Property(QObject, constant=False, notify=modelChanged)
@@ -126,7 +115,7 @@ class DataTableModel(QAbstractTableModel):
     @Slot()
     def appendRow(self):
         self.beginInsertRows(QModelIndex(), self.rowCount(), self.rowCount())
-        self._table_data.append([randrange(0,100) for _ in range(len(self._header))])
+        # self._table_data.append([randrange(0,100) for _ in range(len(self._header))])
         self.endInsertRows()
 
     @Slot()
@@ -148,5 +137,5 @@ def run(data):
 
     if not engine.rootObjects():
         return -1
-
-    return app.exec_()
+    sys.exit(app.exec_())
+    # return app.exec_()
