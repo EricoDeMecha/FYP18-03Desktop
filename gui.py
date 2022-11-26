@@ -127,7 +127,7 @@ def run(data):
     app = QGuiApplication(sys.argv)
     engine = QQmlApplicationEngine()
 
-    app.setWindowIcon(QIcon('icons/mainIcon.png'))
+    app.setWindowIcon(QIcon('icons/mainIcon.ico'))
     # Bind the backend object in qml
     backend = Backend()
     backend.data = data
