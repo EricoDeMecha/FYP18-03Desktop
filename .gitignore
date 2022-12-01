@@ -1,6 +1,5 @@
 .idea/
 .git/
-build/
 .venv/
 dist/
 __pycache__/

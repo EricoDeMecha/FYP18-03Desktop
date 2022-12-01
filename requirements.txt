@@ -1,4 +1,6 @@
-PySide2==5.15.2.1
-protobuf==4.21.6
+protobuf==4.21.0
 pyserial==3.4
 six==1.15.0
+fbs-tutorial
+fbs
+PySide2==5.15.2.1

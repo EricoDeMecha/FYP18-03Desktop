@@ -1,14 +1,14 @@
 import os
-from random import randrange
 import sys
 
-
+from fbs_runtime.application_context.PySide2 import ApplicationContext
 from PySide2 import QtCore
 from PySide2.QtCore import QObject, Slot, QUrl, QAbstractTableModel, QModelIndex, Signal, Property
-from PySide2.QtGui import QGuiApplication, QIcon
+# from PySide2.QtGui import QGuiApplication, QIcon
 from PySide2.QtQml import QQmlApplicationEngine
 
-CURRENT_DIR = os.path.dirname(os.path.abspath(__file__))
+
+QML_PATH = os.path.dirname(os.path.abspath(__file__))
 
 
 class Backend(QObject):
@@ -124,18 +124,20 @@ class DataTableModel(QAbstractTableModel):
 
 
 def run(data):
-    app = QGuiApplication(sys.argv)
+    # app = QGuiApplication(sys.argv)
+    app = ApplicationContext()
     engine = QQmlApplicationEngine()
 
-    app.setWindowIcon(QIcon('icons/mainIcon.ico'))
+    # app.setWindowIcon(QIcon('icons/mainIcon.ico'))
+
     # Bind the backend object in qml
     backend = Backend()
     backend.data = data
     engine.rootContext().setContextProperty('backend', backend)
     # Load the target .qml file
-    engine.load(QUrl.fromLocalFile(os.path.join(CURRENT_DIR, 'main.qml')))
+    engine.load(QUrl.fromLocalFile(os.path.join(QML_PATH, '../qml/main.qml')))
 
     if not engine.rootObjects():
         return -1
-    sys.exit(app.exec_())
+    # sys.exit(app.exec_())
     # return app.exec_()
