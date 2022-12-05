@@ -1,5 +1,4 @@
 import os
-from random import randrange
 import sys
 
 
@@ -133,7 +132,8 @@ def run(data):
     backend.data = data
     engine.rootContext().setContextProperty('backend', backend)
     # Load the target .qml file
-    engine.load(QUrl.fromLocalFile(os.path.join(CURRENT_DIR, 'main.qml')))
+    # engine.load(QUrl.fromLocalFile(os.path.join(CURRENT_DIR, 'main.qml')))
+    engine.load(QUrl.fromLocalFile('main.qml'))
 
     if not engine.rootObjects():
         return -1

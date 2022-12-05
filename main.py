@@ -1,7 +1,6 @@
 import gui
 import dataController
-from threading import Thread
-
+from concurrent.futures import ThreadPoolExecutor
 
 
 def main():
@@ -18,11 +17,10 @@ def main():
         'time_interval': 0,
         'current_step': 0
     }
-    thread1 = Thread(target=gui.run, args=(data,))
-    thread2 = Thread(target=dataController.run, args=(data,))
-    thread1.start()
-    thread2.daemon = True
-    thread2.start()
+    executor = ThreadPoolExecutor(max_workers=2)
+    thread1 = executor.submit(gui.run, data)
+    thread2 = executor.submit(dataController.run, data)
+
 
 if __name__ == '__main__':
     main()
