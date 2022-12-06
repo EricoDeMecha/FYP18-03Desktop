@@ -9,6 +9,10 @@ Built using Qt Qml with a ```PySide 5.15``` backend
 
 ![Desktop Image](imgs/desktop_v1.png)
 
+## Release
+
+A portal windows installer is release [here](https://sourceforge.net/projects/fyp18-03desktop/files/IndependentRelease/SHEMApp.exe/download)
+
 ## Usage
 
 The application can be used in three simple steps:
@@ -20,5 +24,7 @@ The application can be used in three simple steps:
 The connection establishes on an instant, and you are ready to go.
 
 ### Enjoy !
+
+[Release notes](Release.md)
 
 
